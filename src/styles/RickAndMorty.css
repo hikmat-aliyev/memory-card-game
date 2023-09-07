@@ -1,0 +1,12 @@
+.character-container {
+    border: 2px red solid;
+}
+
+.characters-container {
+    display: flex;
+}
+
+.character-container > img {
+    width: 240px;
+    height: 240px;
+}
