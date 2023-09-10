@@ -55,7 +55,6 @@ export default function RickAndMorty({totalNumber, allCharsArray}) {
     })
 
     return (
-
         <div className="rick-and-morty-container">
             {totalArray && (
                 <div className="characters-container">
@@ -72,7 +71,6 @@ export default function RickAndMorty({totalNumber, allCharsArray}) {
                     ))}
                 </div>
              )}
-        </div>  
-        
+        </div>   
     )
 }

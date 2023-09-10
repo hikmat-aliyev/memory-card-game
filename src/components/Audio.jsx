@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import Soundtrack from "../assets/soundtrack.mp3"
+import '../styles/Audio.css' 
 
 export default function Audio () {
     const audioRef = useRef(null);
