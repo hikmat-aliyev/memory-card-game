@@ -1,57 +1,42 @@
 
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import '../styles/RickAndMorty.css'
+import CardBackground from '../assets/rickAndMortyCard.jpg'
+import VanillaTilt from 'vanilla-tilt'
 
-export default function RickAndMorty() {
-    const totalCharsNum = 5;
-   
-    const [allCharsArray, setAllCharsArray] = useState(null);
+// eslint-disable-next-line react/prop-types
+export default function RickAndMorty({totalNumber, allCharsArray}) {
+
+    const [totalCharsNum, setTotalNumber] = useState(totalNumber);
+    const [totalArray, setAllCharsArray] = useState(allCharsArray);
     const [selectedCharsNum, setSelectedCharsNum] = useState(0);
-    const [shownUnselectedArray, setShownUnselectedArray] = useState(null);
-    const [shownSelectedArray, setShownSelectedArray] = useState(null);
-    const [selected, setSelected] = useState(false);
 
-    useEffect(() => {
-        fetch('https://rickandmortyapi.com/api/character')
-            .then(response => response.json())
-            .then(json => {
-                const resultArray = [...json.results];
-                filterAllCharsArray(resultArray);
-                filterShownUnselectedArray(resultArray);
-            });
-    }, [])
-    
-    function filterAllCharsArray(array) {
-        array.splice(5, 1);
-        array.splice(8, 4);
-        array.splice(10, 2);
-        array.splice(11, 1);
-        array.splice(totalCharsNum)
-        array.map((item, index) => {
-            item.status = 'Unselected'
-            item.id = index;
-        });
-        setAllCharsArray(array);
-    }
-
-    function filterShownUnselectedArray() {
-        
-    }
-
-    function changeStatusOfChars(item) {
+    function changeChars(item) {
+        const cardContainers = document.querySelectorAll('.character-container');
         if(item.status !== 'Selected') {
             setSelectedCharsNum(selectedCharsNum + 1);
             item.status = 'Selected';
         }else if(item.status === 'Selected'){
             console.log('game over')
         }
-        shuffleArray();
+        setTimeout(() => {
+            shuffleArray(); 
+        }, 500);
+        
+        cardContainers .forEach(container => {
+            container.classList.add('is-flipped');
+            setTimeout(() => {
+                container.classList.add('flipped-back');
+                container.classList.remove('is-flipped');
+                container.classList.remove('flipped-back');
+            }, 1000);
+          });
     }
 
     if(selectedCharsNum === totalCharsNum) console.log('u win')
 
     function shuffleArray() {
-        const newArray = [...allCharsArray]; // Create a copy of the array
+        const newArray = [...totalArray]; // Create a copy of the array
         for (let i = newArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); // Generate a random index
             console.log(i, j);
@@ -60,20 +45,33 @@ export default function RickAndMorty() {
         setAllCharsArray(newArray);
     }
 
+    useEffect(() =>{
+        VanillaTilt.init(document.querySelectorAll(".card-face-front"), {
+            max: 15,
+            speed: 300,
+            glare: true,
+            'max-glare': 0.50
+        });
+    })
+
     return (
 
-        <div>
-            {allCharsArray && (
+        <div className="rick-and-morty-container">
+            {totalArray && (
                 <div className="characters-container">
-                    {allCharsArray.map((item, index) => (
+                    {totalArray.map((item, index) => (
                         <div className="character-container" key={index}>
-                             <img src={item.image} alt={item.name} onClick={() => changeStatusOfChars(item)}/>
-                             <h3>{item.name}</h3> 
+                            <div className="card-face card-face-front">
+                                <img className="card-images" src={item.image} alt={item.name} onClick={() => changeChars(item)}/>
+                                <h3>{item.name}</h3> 
+                            </div>
+                            <div className="card-face card-face-back">   
+                                <img src= {CardBackground} alt="" />
+                            </div>
                         </div>
                     ))}
                 </div>
              )}
-
         </div>  
         
     )

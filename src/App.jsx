@@ -1,11 +1,49 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import RickAndMorty from './components/RickAndMorty'
+import StartPage from './components/StartPage'
+import LoadingPage from './components/LoadingPage'
 
 function App() {
 
+  const [totalNumber, setTotalNumber] = useState(null);
+  const [levelSelected, setLevel] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [allCharsArray, setAllCharsArray] = useState(null);
+
+
+  function filterAllCharsArray(array) {
+    array.splice(5, 1);
+    array.splice(8, 4);
+    array.splice(10, 2);
+    array.splice(11, 1);
+    array.splice(totalNumber);
+    array.map((item, index) => {
+        item.status = 'Unselected'
+        item.id = index;
+    });
+    if(array[11]) array[11].name = 'Ants Johnson'
+    setAllCharsArray(array);
+}
+  
+  useEffect(() => {
+    if(totalNumber !== null) {
+      fetch('https://rickandmortyapi.com/api/character')
+        .then(response => response.json())
+        .then(json => json.results)
+        .then(totalArray => filterAllCharsArray(totalArray));
+    }
+    }, [totalNumber])
+
+
+
+
   return (
-      <RickAndMorty />
+    <>  
+      {!levelSelected && < StartPage  setTotalNumber={setTotalNumber} setLevel={setLevel}/>}
+      {(!gameStarted && levelSelected) ? <LoadingPage setGameStarted={setGameStarted}/> : null}
+      {gameStarted && <RickAndMorty totalNumber={totalNumber} allCharsArray={allCharsArray}/>}
+    </>
   )
 }
 
