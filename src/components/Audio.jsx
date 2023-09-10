@@ -19,6 +19,7 @@ export default function Audio () {
     }
 
     const toggleAudio = () => {
+        audioRef.current.volume = 0.1;
         if (!isPlaying) {
             audioRef.current.play();
             setIsPlaying(true);

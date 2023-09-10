@@ -29,8 +29,9 @@ export default function RickAndMorty({totalNumber, allCharsArray, setGameStatus,
         if(item.status !== 'Selected') {
             setSelectedCharsNum(selectedCharsNum + 1);
             item.status = 'Selected';
-            //shuffle only if we haven't won already
+            //shuffle and play flip card sound only if we haven't won already
             if(selectedCharsNum !== totalCharsNum){
+                playFlipSound();
                 cardContainers .forEach(container => {
                     container.classList.add('is-flipped');
                     setTimeout(() => {
@@ -78,7 +79,7 @@ export default function RickAndMorty({totalNumber, allCharsArray, setGameStatus,
                 <div className="characters-container">
                     {totalArray.map((item, index) => (
                         <div className="character-container" key={index}>
-                            <div className="card-face card-face-front" onClick={playFlipSound}>
+                            <div className="card-face card-face-front">
                                 <img className="card-images" src={item.image} alt={item.name} onClick={() => changeChars(item)}/>
                                 <h3>{item.name}</h3> 
                             </div>
