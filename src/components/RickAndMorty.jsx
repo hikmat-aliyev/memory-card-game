@@ -1,46 +1,64 @@
-
-import {useState, useEffect, useCallback} from "react";
-import '../styles/RickAndMorty.css'
-import CardBackground from '../assets/rickAndMortyCard.jpg'
-import VanillaTilt from 'vanilla-tilt'
+import {useState, useEffect} from "react";
+import '../styles/RickAndMorty.css';
+import CardBackground from '../assets/rickAndMortyCard.jpg';
+import VanillaTilt from 'vanilla-tilt';
+import FlipSound from '../assets/flipcard.mp3'
+import { useRef } from "react";
 
 // eslint-disable-next-line react/prop-types
-export default function RickAndMorty({totalNumber, allCharsArray}) {
+export default function RickAndMorty({totalNumber, allCharsArray, setGameStatus, setWin}) {
 
     const [totalCharsNum, setTotalNumber] = useState(totalNumber);
     const [totalArray, setAllCharsArray] = useState(allCharsArray);
     const [selectedCharsNum, setSelectedCharsNum] = useState(0);
+    const flipSound = useRef(null);
+
+    const playFlipSound = () => {
+        if (flipSound.current) {
+            flipSound.current.currentTime = 0;
+            flipSound.current.play();
+            setTimeout(() => {
+                flipSound.current.currentTime = 0;
+                flipSound.current.play();
+            }, 1000);
+        }
+    }
 
     function changeChars(item) {
         const cardContainers = document.querySelectorAll('.character-container');
         if(item.status !== 'Selected') {
             setSelectedCharsNum(selectedCharsNum + 1);
             item.status = 'Selected';
+            //shuffle only if we haven't won already
+            if(selectedCharsNum !== totalCharsNum){
+                cardContainers .forEach(container => {
+                    container.classList.add('is-flipped');
+                    setTimeout(() => {
+                        container.classList.add('flipped-back');
+                        container.classList.remove('is-flipped');
+                        container.classList.remove('flipped-back');
+                    }, 1000);
+                    setTimeout(() => {
+                        shuffleArray(); 
+                    }, 500);
+                  });   
+                }
         }else if(item.status === 'Selected'){
-            console.log('game over')
+           setGameStatus(true);
+           setWin(false);
         }
-        setTimeout(() => {
-            shuffleArray(); 
-        }, 500);
-        
-        cardContainers .forEach(container => {
-            container.classList.add('is-flipped');
-            setTimeout(() => {
-                container.classList.add('flipped-back');
-                container.classList.remove('is-flipped');
-                container.classList.remove('flipped-back');
-            }, 1000);
-          });
     }
 
-    if(selectedCharsNum === totalCharsNum) console.log('u win')
+    if(selectedCharsNum === totalCharsNum){
+        setGameStatus(true);
+        setWin(true);
+    }
 
     function shuffleArray() {
-        const newArray = [...totalArray]; // Create a copy of the array
+        const newArray = [...totalArray];
         for (let i = newArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1)); // Generate a random index
-            console.log(i, j);
-            [newArray[i], newArray[j]] = [newArray[j], newArray[i]]; // Swap elements
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
         }
         setAllCharsArray(newArray);
     }
@@ -60,7 +78,7 @@ export default function RickAndMorty({totalNumber, allCharsArray}) {
                 <div className="characters-container">
                     {totalArray.map((item, index) => (
                         <div className="character-container" key={index}>
-                            <div className="card-face card-face-front">
+                            <div className="card-face card-face-front" onClick={playFlipSound}>
                                 <img className="card-images" src={item.image} alt={item.name} onClick={() => changeChars(item)}/>
                                 <h3>{item.name}</h3> 
                             </div>
@@ -71,6 +89,7 @@ export default function RickAndMorty({totalNumber, allCharsArray}) {
                     ))}
                 </div>
              )}
+             <audio controls ref={flipSound} src={FlipSound} />
         </div>   
     )
 }

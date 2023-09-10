@@ -1,0 +1,45 @@
+:root {
+    --button-color: rgb(17, 54, 17);
+}
+
+.start-page-container {
+    height: 50vh;
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.start-page-container > h1 {
+    color: var(--button-color);
+    font-size: 70px;
+    margin-bottom: 2rem;
+}   
+
+.start-page-container > div {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+}
+
+.start-page-container > div > button {
+    border-radius: 12px;
+    background-color: var(--button-color);
+    color: white;
+    font-size: large;
+}
+
+
+@media screen and (max-width: 500px) {
+    .start-page-container > h1{
+        font-size: 40px;
+    }
+}

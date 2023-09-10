@@ -1,0 +1,19 @@
+audio {
+    display: none;
+}
+
+.audio-button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 1rem;
+    background-color: rgba(79, 213, 13, 0.463);
+    line-height: 1.5;
+    text-align: center;
+    border: none;
+}
+
+svg {
+    width: 25px;
+    height: 25px;
+}

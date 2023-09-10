@@ -1,0 +1,18 @@
+.logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20%;
+    margin: 1rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Scale up when hovering */
+}
+
+@media screen and (max-width: 500px) {
+    .logo {
+        width: 150px;
+    }
+}
