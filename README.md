@@ -6,5 +6,7 @@ The Memory Card project is created according to the assignment from The Odin Pro
 
 # Features
 
-## Loading Page
-## Difficulty level
+- Loading Page
+- Difficulty Level
+  - . Loading Page
+  - . Difficulty Level
