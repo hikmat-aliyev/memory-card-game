@@ -15,6 +15,7 @@ The Memory Card project is created according to the assignment from The Odin Pro
 -Learned importance of smaller components
 
 # Getting Started
+<pre>
 HTTPS - git clone https://github.com/hikmat-aliyev/memory-card-game.git
 
 SSH - git clone git@github.com:hikmat-aliyev/memory-card-game.git
@@ -24,3 +25,4 @@ cd memory-card-game
 mpm install 
 
 npm start
+<pre>
